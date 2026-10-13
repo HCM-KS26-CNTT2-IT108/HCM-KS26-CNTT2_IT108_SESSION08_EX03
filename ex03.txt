@@ -1,0 +1,15 @@
+PHẦN 1: PHÂN TÍCH & SƠ ĐỒ PIPELINE
+
+1. Sơ đồ mô tả luồng dữ liệu qua Pipeline PowerShell:
+[Đọc tệp (Get-Content)] ➔ [Lọc từ khóa (Select-String / Where-Object)] ➔ [Đếm kết quả (.Count)]
+
+- Bước 1 (Đọc tệp): Dùng lệnh `Get-Content` để nạp nội dung tệp log vào đường ống pipeline dưới dạng các đối tượng dòng văn bản.
+- Bước 2 (Lọc từ khóa): Lọc ra các dòng chứa chữ "TIMEOUT" và loại bỏ các dòng nhiễu như "NOT TIMEOUT".
+- Bước 3 (Đếm kết quả): Lấy thuộc tính `.Count` của tập hợp các đối tượng kết quả để trả về một con số thống kê duy nhất.
+
+
+PHẦN 2: TRIỂN KHAI (1 DÒNG LỆNH POWERSHELL)
+
+Câu lệnh PowerShell hoàn chỉnh để thống kê số lượng sự cố TIMEOUT (tránh đếm nhầm dòng NOT TIMEOUT):
+
+(Get-Content server_log.log | Select-String -Pattern "TIMEOUT" | Where-Object { $_.Line -notmatch "NOT TIMEOUT" }).Count
